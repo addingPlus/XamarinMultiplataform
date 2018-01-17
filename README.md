@@ -10,7 +10,7 @@ Multilenguaje:
   - Helpers
   - Interfaces
   - Resources
-  - Android {implementations}
+  - Android {implementations, Info.plist(Añadir final)}
   - IOS {implementations}
   
 Packages:
