@@ -1,4 +1,7 @@
-<key>CFBundleLocalizations</key>
+
+<string>Assets.xcassets/AppIcon.appiconset</string>
+<!-- Texto Init -->
+	<key>CFBundleLocalizations</key>
 	<array>
 		<string>es</string>
 		<string>fr</string>
@@ -6,3 +9,6 @@
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+<!-- Texto Fin -->
+</dict>
+</plist>
