@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:i18n="clr-namespace:MultiplataformApp.Helpers"
+    x:Class="MultiplataformApp.Views.ConvertView"
+    BindingContext="{Binding Main, Source={StaticResource Locator}}"
+    Title="Convert">
+    <ContentPage.Padding>
+        <OnPlatform 
+            x:TypeArguments="Thickness" 
+        iOS="20,10,20,10"
+        Android="10"/>
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <StackLayout
+            BindingContext="{Binding Convert}">
+            <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="{i18n:Translate Title}"
+                Margin="10">
+            </Label>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width=".3*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Text="Amount:"
+                    VerticalOptions="Center">
+                </Label>
+                <Entry
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    Text="{Binding Amount, Mode=TwoWay}"
+                    Placeholder="Enter the amount to">
+                </Entry>
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Text="Source rate:"
+                    VerticalOptions="Center">
+                </Label>
+                <Picker
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding Rates}"
+                    SelectedItem="{Binding SourceRate}"
+                    Title="Select a source rate...">
+                </Picker>
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Text="Target rate:"
+                    VerticalOptions="Center">
+                </Label>
+                <Picker
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding Rates}"
+                    SelectedItem="{Binding TargetRate}"
+                    Title="Select a target rate...">
+                </Picker>
+                <Image
+                    Grid.Column="2"
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    HeightRequest="40"
+                    Source="switchIcon.png"
+                    WidthRequest="40">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SwitchCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+
+            <ActivityIndicator
+                IsRunning="{Binding IsRunning, Mode=TwoWay}">
+            </ActivityIndicator>
+            <Button
+                Command="{Binding ConvertCommand}"
+                BackgroundColor="Navy"
+                BorderRadius="20"
+                HeightRequest="50"
+                FontAttributes="Bold"
+                IsEnabled= "{Binding IsEnabled, Mode=TwoWay}"
+                Text="Convert"
+                TextColor="White">
+            </Button>
+            <Label
+                BackgroundColor="Silver"
+                FontSize="Large"
+                HorizontalTextAlignment="Center"
+                Margin="0,10"
+                Text="{Binding Result, Mode=TwoWay}"
+                VerticalOptions="FillAndExpand"
+                VerticalTextAlignment="Center">
+            </Label>
+            <Button
+                Command="{Binding CategoriesCommand}"
+                BackgroundColor="Navy"
+                BorderRadius="20"
+                HeightRequest="40"
+                FontAttributes="Bold"
+                IsEnabled= "{Binding IsEnabled, Mode=TwoWay}"
+                Text="Convert"
+                TextColor="White">
+            </Button>
+            
+        </StackLayout>
+	</ContentPage.Content>
+</ContentPage>
