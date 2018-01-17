@@ -9,12 +9,10 @@
     x:Class="MultiplataformApp.App">
 	<Application.Resources>
 		<!-- Application resource dictionary -->
-        <ResourceDictionary>
-
-            <!-- Locator --> 
-            <infra:InstanceLocator x:Key="Locator"/>
-            
-        </ResourceDictionary>
+		<ResourceDictionary>
+			<!-- Locator --> 
+			<infra:InstanceLocator x:Key="Locator"/>       
+		</ResourceDictionary>
 	</Application.Resources>
 </Application>
 
@@ -23,11 +21,9 @@
 namespace MultiplataformApp.Infrastructure
 {
     using MainViewModel;
-
     public class InstanceLocator
     {
         public MainViewModel Main{ get; set; }
-
         public InstanceLocator()
         {
             Main = new MainViewModel();
@@ -49,13 +45,11 @@ namespace MultiplataformApp.MainViewModel
     using MultiplataformApp.Models;
     using Newtonsoft.Json;
     using Xamarin.Forms;
-
     public class MainViewModel : INotifyPropertyChanged
     {
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
-
         #region Attributes
         bool _isRunning;
         bool _isEnabled;
@@ -64,14 +58,12 @@ namespace MultiplataformApp.MainViewModel
         Rate _sourceRate;
         Rate _targetRate;
         #endregion
-
         #region Propierties
         public string Amount
         {
             get;
             set;
         }
-
         public ObservableCollection<Rate> Rates
         {
             get
@@ -89,7 +81,6 @@ namespace MultiplataformApp.MainViewModel
                 }
             }
         }
-
         public Rate SourceRate
         {
             get
@@ -107,7 +98,6 @@ namespace MultiplataformApp.MainViewModel
                 }
             }
         }
-
         public Rate TargetRate
         {
             get
@@ -125,7 +115,6 @@ namespace MultiplataformApp.MainViewModel
                 }
             }
         }
-
         public bool IsRunning
         {
             get{
@@ -141,7 +130,6 @@ namespace MultiplataformApp.MainViewModel
                 }
             }
         }
-
         public bool IsEnabled
         {
             get
@@ -159,7 +147,6 @@ namespace MultiplataformApp.MainViewModel
                 }
             }
         }
-
         public string Result
         {
             get
@@ -176,28 +163,24 @@ namespace MultiplataformApp.MainViewModel
                         new PropertyChangedEventArgs(nameof(Result)));
                 }
             }
-       }
+        }
         #endregion
-
         #region Constructors
         public MainViewModel()
         {
             LoadRates();
         }
         #endregion
-
         #region Methods
         async void LoadRates()
         {
             IsRunning = true;
             Result = "Loading rates...";
-
             try
             {
                 var client = new HttpClient();
                 client.BaseAddress = new 
                     Uri("http://apiexchangerates.azurewebsites.net");
-
                 var controller = "/api/Rates";
                 var response = await client.GetAsync(controller);
                 var result = await response.Content.ReadAsStringAsync();
@@ -206,10 +189,8 @@ namespace MultiplataformApp.MainViewModel
                     IsRunning = false;
                     Result = result;
                 }
-
                 var rates = JsonConvert.DeserializeObject<List<Rate>>(result);
                 Rates = new ObservableCollection<Rate>(rates);
-
                 IsRunning = false;
                 IsEnabled = true;
                 Result = "Ready to convert";
@@ -221,7 +202,6 @@ namespace MultiplataformApp.MainViewModel
             }
         }
         #endregion
-
         #region Commands
         public ICommand SwitchCommand
         {
@@ -230,7 +210,6 @@ namespace MultiplataformApp.MainViewModel
                 return new RelayCommand(Switch);
             }
         }
-
         void Switch()
         {
             var aux = SourceRate;
@@ -238,7 +217,6 @@ namespace MultiplataformApp.MainViewModel
             TargetRate = aux;
             Convert();
         }
-
         public ICommand ConvertCommand
         {
             get
@@ -246,7 +224,6 @@ namespace MultiplataformApp.MainViewModel
                 return new RelayCommand(Convert);   
             }
         }
-
         async void Convert()
         {
             if(string.IsNullOrEmpty(Amount))
@@ -257,7 +234,6 @@ namespace MultiplataformApp.MainViewModel
                     "Accept");
                 return;
             }
-
             decimal amount = 0;
             if(!decimal.TryParse(Amount, out amount))
             {
@@ -267,7 +243,6 @@ namespace MultiplataformApp.MainViewModel
                     "Accept");
                 return;
             }
-
             if(SourceRate == null)
             {
                 await Application.Current.MainPage.DisplayAlert(
@@ -276,7 +251,6 @@ namespace MultiplataformApp.MainViewModel
                     "Accept");
                 return;
             }
-
             if (TargetRate == null)
             {
                 await Application.Current.MainPage.DisplayAlert(
@@ -285,11 +259,9 @@ namespace MultiplataformApp.MainViewModel
                     "Accept");
                 return;
             }
-
             var amountConverted = amount / 
                                 (decimal) SourceRate.TaxRate * 
                                 (decimal) TargetRate.TaxRate;
-
             Result = string.Format("{0} {1:C2} = {2} {3:C2}", 
                                    SourceRate.Code, 
                                    amount, 
@@ -323,27 +295,23 @@ namespace MultiplataformApp.MainViewModel
                 Text="Foreign Exchange"
                 Margin="10">
             </Label>
-
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width=".3*"/>
                 </Grid.ColumnDefinitions>
-
                 <Label
                     Grid.Column="0"
                     Grid.Row="0"
                     Text="Amount:"
                     VerticalOptions="Center">
                 </Label>
-                
                 <Entry
                     Grid.Column="1"
                     Grid.Row="0"
@@ -351,14 +319,12 @@ namespace MultiplataformApp.MainViewModel
                     Text="{Binding Amount, Mode=TwoWay}"
                     Placeholder="Enter the amount to">
                 </Entry>
-                
                 <Label
                     Grid.Column="0"
                     Grid.Row="1"
                     Text="Source rate:"
                     VerticalOptions="Center">
                 </Label>
-                
                 <Picker
                     Grid.Column="1"
                     Grid.Row="1"
@@ -367,14 +333,12 @@ namespace MultiplataformApp.MainViewModel
                     SelectedItem="{Binding SourceRate}"
                     Title="Select a source rate...">
                 </Picker>
-                
                 <Label
                     Grid.Column="0"
                     Grid.Row="2"
                     Text="Target rate:"
                     VerticalOptions="Center">
                 </Label>
-                
                 <Picker
                     Grid.Column="1"
                     Grid.Row="2"
@@ -383,7 +347,6 @@ namespace MultiplataformApp.MainViewModel
                     SelectedItem="{Binding TargetRate}"
                     Title="Select a target rate...">
                 </Picker>
-                
                 <Image
                     Grid.Column="2"
                     Grid.Row="1"
@@ -396,11 +359,9 @@ namespace MultiplataformApp.MainViewModel
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>
-
             <ActivityIndicator
                 IsRunning="{Binding IsRunning, Mode=TwoWay}">
             </ActivityIndicator>
-            
             <Button
                 Command="{Binding ConvertCommand}"
                 BackgroundColor="Navy"
@@ -411,7 +372,6 @@ namespace MultiplataformApp.MainViewModel
                 Text="Convert"
                 TextColor="White">
             </Button>
-            
             <Label
                 BackgroundColor="Silver"
                 FontSize="Large"
