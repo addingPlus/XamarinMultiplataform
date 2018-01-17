@@ -9,6 +9,7 @@
     x:Class="MultiplataformApp.App">
 	<Application.Resources>
 		<!-- Application resource dictionary -->
+		
 		<ResourceDictionary>
 			<!-- Locator --> 
 			<infra:InstanceLocator x:Key="Locator"/>       
